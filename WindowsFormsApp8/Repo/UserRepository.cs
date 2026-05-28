@@ -15,7 +15,7 @@ namespace WindowsFormsApp8.Repo
             this.connector = new ConnectionDatabaseService("emolod15adv", "root", "root"); 
         }
 
-        public void create(User newUser)
+        public bool create(User newUser)
         {
             string query = 
                 "INSERT INTO `users`(`username`, `email`, `password`) " +
@@ -31,11 +31,14 @@ namespace WindowsFormsApp8.Repo
 
                 connection.Open();
 
-                command.ExecuteNonQuery();
+                if (command.ExecuteNonQuery() == 1)
+                    return true;
+                else
+                    return false;
             }
         }
 
-        public void update(User user) {
+        public bool update(User user) {
 
             string query =
                     "UPDATE `users` " +
@@ -53,7 +56,10 @@ namespace WindowsFormsApp8.Repo
 
                 connection.Open();
 
-                command.ExecuteNonQuery();
+                if (command.ExecuteNonQuery() == 1)
+                    return true;
+                else
+                    return false;
             }
         }
 
@@ -76,8 +82,8 @@ namespace WindowsFormsApp8.Repo
                     User user = new User(
                         Convert.ToInt32(reader["id"]), 
                         reader["email"].ToString(), 
-                        reader["username"].ToString(), 
-                        "", 
+                        reader["username"].ToString(),
+                        reader["password"].ToString(), 
                         Convert.ToDateTime(reader["createdAt"]), 
                         Convert.ToDateTime(reader["updatedAt"])
                     );
@@ -89,14 +95,54 @@ namespace WindowsFormsApp8.Repo
             }
         }
 
-        public List<User> getAll()
+        public List<User> getAll(int limit = 20)
         {
-            return null;
+            List<User> users = new List<User>();
+            string query = "SELECT * FROM users LIMIT " + limit;
+
+            using (MySqlConnection connection = this.connector.getConnection())
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                connection.Open();
+
+                MySqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    User user = new User(
+                        Convert.ToInt32(reader["id"]),
+                        reader["email"].ToString(),
+                        reader["username"].ToString(),
+                        "",
+                        Convert.ToDateTime(reader["createdAt"]),
+                        Convert.ToDateTime(reader["updatedAt"])
+                    );
+
+                    users.Add(user);
+                }
+            }
+
+            return users;
         }
 
         public bool delete(int id)
         {
-            return false;
+            string query = "DELETE FROM users WHERE id = @id";
+
+            using (MySqlConnection connection = this.connector.getConnection())
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                command.Parameters.AddWithValue("@id", id);
+
+                connection.Open();
+
+                if (command.ExecuteNonQuery() == 1)
+                    return true;
+                else
+                    return false;
+            }
         }
     }
 }

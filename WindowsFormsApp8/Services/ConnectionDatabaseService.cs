@@ -5,7 +5,7 @@ namespace WindowsFormsApp8.Services
 {
     public class ConnectionDatabaseService
     {
-        private MySqlConnection connection = null;
+        private string connectionString = "";
         public ConnectionDatabaseService(
             string databaseName, 
             string username, 
@@ -13,14 +13,12 @@ namespace WindowsFormsApp8.Services
             string server = "localhost", 
             int port = 3306) {
 
-            string connectionString = $"server={server};port={port};database={databaseName};user={username};password={password};";
-
-            this.connection = new MySqlConnection(connectionString);
+            this.connectionString = $"server={server};port={port};database={databaseName};user={username};password={password};";
         }
 
         public MySqlConnection getConnection()
         {
-            return this.connection;
+            return new MySqlConnection(connectionString);
         }
     }
 }
