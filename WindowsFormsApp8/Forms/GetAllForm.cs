@@ -118,8 +118,7 @@ namespace WindowsFormsApp8.Forms
 
                 if (result == DialogResult.Yes)
                 {
-                    e.Cancel = false;
-                    this.mForm.Visible = true;
+                    Application.Exit();
                 }
 
                 if (result == DialogResult.No)
