@@ -96,5 +96,12 @@ namespace WindowsFormsApp8
                 }
             }
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Visible = false;
+            GetAllForm getAllForm = new GetAllForm(this, this.userRepository);
+            getAllForm.Show();
+        }
     }
 }

@@ -96,6 +96,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Forms\GetAllForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GetAllForm.Designer.cs">
+      <DependentUpon>GetAllForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\GetOneForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,6 +119,9 @@
     <Compile Include="Repo\UserRepository.cs" />
     <Compile Include="Services\ConnectionDatabaseService.cs" />
     <Compile Include="Services\ValidateService.cs" />
+    <EmbeddedResource Include="Forms\GetAllForm.resx">
+      <DependentUpon>GetAllForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\GetOneForm.resx">
       <DependentUpon>GetOneForm.cs</DependentUpon>
     </EmbeddedResource>
